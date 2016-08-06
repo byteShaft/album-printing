@@ -1,7 +1,7 @@
 package com.byteshaft.albumsapp.utils.network;
 
+import java.net.HttpURLConnection;
+
 public interface HttpRequestStateListener {
-    void onConnectionOpened();
-    void onDataSent();
-    void onResponse(int responseCode, String responseText);
+    void onReadyStateChanged(HttpURLConnection connection, int readyState);
 }

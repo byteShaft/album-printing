@@ -15,35 +15,25 @@ import java.util.ArrayList;
 public class ConnectionUtil {
 
     private StateListenerHelpers mListenerHelpers;
-    private HttpURLConnection mConnection;
+    protected HttpURLConnection mConnection;
+    protected String mResponseText = "";
     private ArrayList<HttpRequestStateListener> mListeners;
 
-    public ConnectionUtil(Context context, String url) {
+    public ConnectionUtil(Context context) {
         mListeners = new ArrayList<>();
         mListenerHelpers = new StateListenerHelpers(context);
-        mConnection = openConnection(url);
     }
 
-    protected HttpURLConnection getConnectionInstance() {
-        return mConnection;
-    }
-
-    private HttpURLConnection openConnection(String url) {
-        HttpURLConnection connection = null;
+    protected void openConnection(String requestMethod, String url) {
         try {
             URL urlObject = new URL(url);
-            connection = (HttpURLConnection) urlObject.openConnection();
-            mListenerHelpers.emitOnConnectionOpened(mListeners);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return connection;
-    }
-
-    private void setConnectionAttributes(String contentType, String method) {
-        try {
-            mConnection.setRequestProperty("Content-Type", contentType);
-            mConnection.setRequestMethod(method);
+            mConnection = (HttpURLConnection) urlObject.openConnection();
+            mConnection.setRequestMethod(requestMethod);
+            mListenerHelpers.emitOnReadyStateChanged(
+                    mListeners,
+                    mConnection,
+                    HttpRequest.STATE_OPENED
+            );
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -55,7 +45,6 @@ public class ConnectionUtil {
             OutputStream os = mConnection.getOutputStream();
             os.write(outputInBytes);
             os.close();
-            mListenerHelpers.emitOnDataSent(mListeners);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,34 +52,28 @@ public class ConnectionUtil {
 
     private void readResponse() {
         try {
-            InputStream is = mConnection.getInputStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+            InputStream inputStream = mConnection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            StringBuilder output = new StringBuilder();
             String line;
-            StringBuilder response = new StringBuilder();
-            while((line = rd.readLine()) != null) {
-                response.append(line);
-                response.append('\r');
+            while ((line = reader.readLine()) != null) {
+                output.append(line).append('\n');
             }
-            String responseText = response.toString();
-            mListenerHelpers.emitOnResponse(
-                    mListeners,
-                    responseText,
-                    mConnection.getResponseCode()
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
+            mResponseText = output.toString();
+        } catch (IOException ignore) {
         }
+        mListenerHelpers.emitOnReadyStateChanged(
+                mListeners,
+                mConnection,
+                HttpRequest.STATE_DONE
+        );
     }
 
-    protected void sendRequest(
-            final String method,
-            final String contentType,
-            final String data
-    ) {
+    protected void sendRequest(final String contentType, final String data) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                setConnectionAttributes(contentType, method);
+                mConnection.setRequestProperty("Content-Type", contentType);
                 if (data != null) {
                     sendRequestData(data);
                 }
@@ -99,7 +82,7 @@ public class ConnectionUtil {
         }).start();
     }
 
-    protected void addStateListener(HttpRequestStateListener listener) {
+    protected void addReadyStateListener(HttpRequestStateListener listener) {
         mListeners.add(listener);
     }
 }

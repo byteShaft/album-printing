@@ -2,7 +2,7 @@ package com.byteshaft.albumsapp.utils;
 
 public class Constants {
 
-    private static String API_BASE = "http://192.168.0.106:8000/api/";
+    private static String API_BASE = "http://188.166.145.145:8000/api/";
     public static String ENDPOINT_REGISTER = API_BASE + "register";
     public static String ENDPOINT_LOGIN = API_BASE + "login";
     public static String ENDPOINT_ACTIVATE = API_BASE + "activate";

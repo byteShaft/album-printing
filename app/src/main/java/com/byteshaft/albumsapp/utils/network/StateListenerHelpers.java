@@ -3,6 +3,7 @@ package com.byteshaft.albumsapp.utils.network;
 import android.content.Context;
 import android.os.Handler;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
 public class StateListenerHelpers {
@@ -11,40 +12,19 @@ public class StateListenerHelpers {
 
     public StateListenerHelpers(Context context) {
         mMainHandler = new Handler(context.getMainLooper());
+
     }
 
-    protected void emitOnConnectionOpened(ArrayList<HttpRequestStateListener> listeners) {
-        for (final HttpRequestStateListener listener : listeners) {
-            mMainHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    listener.onConnectionOpened();
-                }
-            });
-        }
-    }
-
-    protected void emitOnDataSent(ArrayList<HttpRequestStateListener> listeners) {
-        for (final HttpRequestStateListener listener : listeners) {
-            mMainHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    listener.onDataSent();
-                }
-            });
-        }
-    }
-
-    protected void emitOnResponse(
-            final ArrayList<HttpRequestStateListener> listeners,
-            final String responseText,
-            final int responseCode
+    protected void emitOnReadyStateChanged(
+            ArrayList<HttpRequestStateListener> listeners,
+            final HttpURLConnection connection,
+            final int readyState
     ) {
         for (final HttpRequestStateListener listener : listeners) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    listener.onResponse(responseCode, responseText);
+                    listener.onReadyStateChanged(connection, readyState);
                 }
             });
         }

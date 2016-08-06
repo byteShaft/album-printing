@@ -3,43 +3,56 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/entry_email"
+    <LinearLayout
+        android:id="@+id/container_signin_fields"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:hint="Email address..."
-        android:layout_centerInParent="true"
+        android:orientation="vertical">
 
-        />
+        <EditText
+            android:id="@+id/entry_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="Email address..."
+            android:layout_centerInParent="true"
 
-    <EditText
-        android:id="@+id/entry_password"
+            />
+
+        <EditText
+            android:id="@+id/entry_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="Password..."
+            android:layout_below="@id/entry_email"
+
+            />
+
+    </LinearLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="Password..."
-        android:layout_below="@id/entry_email"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/container_signin_fields">
 
-        />
+        <Button
+            android:id="@+id/button_sign_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign In"
 
-    <Button
-        android:id="@+id/button_sign_in"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign In"
-        android:layout_below="@id/entry_password"
+            />
 
-        />
+        <Button
+            android:id="@+id/button_sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            android:layout_alignParentRight="true"
 
-    <Button
-        android:id="@+id/button_sign_up"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign Up"
-        android:layout_below="@id/entry_password"
-        android:layout_alignParentRight="true"
+            />
 
-        />
+    </RelativeLayout>
 
 </RelativeLayout>
