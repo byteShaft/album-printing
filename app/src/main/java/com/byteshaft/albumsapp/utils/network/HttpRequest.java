@@ -12,13 +12,6 @@ public class HttpRequest extends ConnectionUtil {
     public static final short STATE_LOADING = 3;
     public static final short STATE_DONE = 4;
 
-    public static final short RESPONSE_OK = 200;
-    public static final short RESPONSE_UNAUTHORIZED = 401;
-    public static final short RESPONSE_BAD = 400;
-    public static final short RESPONSE_CREATED = 201;
-    public static final short RESPONSE_FORBIDDEN = 403;
-    public static final short RESPONSE_NOTFOUND = 404;
-
     public HttpRequest(Context context) {
         super(context);
     }
@@ -40,6 +33,10 @@ public class HttpRequest extends ConnectionUtil {
 
     public void send(String data) {
         sendRequest(Constants.CONTENT_TYPE_JSON, data);
+    }
+
+    public void send() {
+        sendRequest(Constants.CONTENT_TYPE_JSON, null);
     }
 
     public String getResponseText() {

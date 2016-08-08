@@ -1,5 +1,6 @@
 package com.byteshaft.albumsapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -16,8 +17,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-
-import static com.byteshaft.albumsapp.utils.ui.Helpers.showToast;
 
 public class SignUp extends AppCompatActivity implements HttpRequestStateListener,
         View.OnClickListener {
@@ -43,13 +42,15 @@ public class SignUp extends AppCompatActivity implements HttpRequestStateListene
 
     @Override
     public void onReadyStateChanged(HttpURLConnection connection, int readyState) {
-        System.out.println(connection);
         switch (readyState) {
             case HttpRequest.STATE_DONE:
                 try {
                     switch (connection.getResponseCode()) {
-                        case HttpRequest.RESPONSE_CREATED:
-                            showToast(mRequest.getResponseText());
+                        case HttpURLConnection.HTTP_CREATED:
+                            finish();
+                            startActivity(
+                                    new Intent(getApplicationContext(), ActivateAccount.class)
+                            );
                             break;
                     }
                 } catch (IOException e) {

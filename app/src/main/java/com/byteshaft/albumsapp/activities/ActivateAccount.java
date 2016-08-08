@@ -44,9 +44,10 @@ public class ActivateAccount extends AppCompatActivity implements View.OnClickLi
             case HttpRequest.STATE_DONE:
                 try {
                     switch (connection.getResponseCode()) {
-                        case HttpRequest.RESPONSE_OK:
+                        case HttpURLConnection.HTTP_OK:
                             Config.saveUserProfile(mRequest.getResponseText());
                             Config.setIsLoggedIn(true);
+                            finish();
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     }
                 } catch (IOException e) {

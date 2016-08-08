@@ -7,13 +7,15 @@ import android.widget.TextView;
 
 import com.byteshaft.albumsapp.R;
 import com.byteshaft.albumsapp.utils.Config;
+import com.byteshaft.albumsapp.utils.Constants;
+import com.byteshaft.albumsapp.utils.network.HttpRequest;
+import com.byteshaft.albumsapp.utils.network.HttpRequestStateListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.net.HttpURLConnection;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HttpRequestStateListener {
 
-    private TextView mTextWelcome;
+    private HttpRequest mHttp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,14 +23,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         if (!Config.isLoggedIn()) {
             startActivity(new Intent(getApplicationContext(), SignIn.class));
+            finish();
             return;
         }
-        mTextWelcome = (TextView) findViewById(R.id.text_view_title_main_screen);
-        JSONObject obj = Config.getUserProfile();
-        try {
-            mTextWelcome.setText("Welcome " + obj.get("full_name"));
-        } catch (JSONException e) {
-            e.printStackTrace();
+        TextView welcomeText = (TextView) findViewById(R.id.text_view_title_main_screen);
+        welcomeText.setText("Welcome " + Config.getFullName());
+        createAlbum("Test Album");
+    }
+
+    @Override
+    public void onReadyStateChanged(HttpURLConnection connection, int readyState) {
+        if (readyState == 4) {
+            System.out.println(mHttp.getResponseText());
         }
+    }
+
+    private void createAlbum(String name) {
+        String token = "798a9fc28b5ff6118df33d97456a84d2d8e7622b";
+        mHttp = new HttpRequest(getApplicationContext());
+        mHttp.setOnReadyStateChangedListener(this);
+        mHttp.open("POST", Constants.ENDPOINT_ALBUMS);
+        mHttp.setRequestHeader("Authorization", "Token " + token);
+        mHttp.send("{\"name\": " + "\"" + name + "\"" + "}");
     }
 }

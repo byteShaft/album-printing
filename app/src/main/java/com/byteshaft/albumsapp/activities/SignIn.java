@@ -63,6 +63,7 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener,
                 break;
             case R.id.button_sign_up:
                 startActivity(new Intent(getApplicationContext(), SignUp.class));
+                finish();
                 break;
         }
     }
@@ -100,18 +101,19 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener,
             case HttpRequest.STATE_DONE:
                 try {
                     switch (connection.getResponseCode()) {
-                        case HttpRequest.RESPONSE_OK:
+                        case HttpURLConnection.HTTP_OK:
                             Config.saveUserProfile(mHttp.getResponseText());
                             Config.setIsLoggedIn(true);
+                            finish();
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             break;
-                        case HttpRequest.RESPONSE_UNAUTHORIZED:
+                        case HttpURLConnection.HTTP_UNAUTHORIZED:
                             showToast("Wrong email or password");
                             break;
-                        case HttpRequest.RESPONSE_FORBIDDEN:
+                        case HttpURLConnection.HTTP_FORBIDDEN:
                             showAccountNotActiveDialog();
                             break;
-                        case HttpRequest.RESPONSE_NOTFOUND:
+                        case HttpURLConnection.HTTP_NOT_FOUND:
                             showToast("Account does not exist.");
                             break;
                     }
