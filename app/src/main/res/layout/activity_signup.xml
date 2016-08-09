@@ -1,17 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    android:background="@mipmap/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="vertical">
+
+
+        <EditText
+            android:id="@+id/entry_signup_fullname"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:background="@drawable/edittext_background"
+            android:hint="Full name..."
+            android:inputType="textPersonName"
+
+            />
 
         <EditText
             android:id="@+id/entry_signup_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:background="@drawable/edittext_background"
             android:hint="Enter new email..."
             android:inputType="textEmailAddress"
 
@@ -19,8 +50,14 @@
 
         <EditText
             android:id="@+id/entry_signup_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:background="@drawable/edittext_background"
             android:hint="password..."
             android:inputType="textPassword"
 
@@ -28,26 +65,30 @@
 
         <EditText
             android:id="@+id/entry_signup_password_repeat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:background="@drawable/edittext_background"
             android:hint="repeat password..."
             android:inputType="textPassword"
 
             />
 
-        <EditText
-            android:id="@+id/entry_signup_fullname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Full name..."
-            android:inputType="textPersonName"
-
-            />
 
         <EditText
             android:id="@+id/entry_signup_mobile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:background="@drawable/edittext_background"
             android:hint="Mobile number..."
             android:inputType="phone"
 
@@ -55,12 +96,14 @@
 
         <Button
             android:id="@+id/button_signup_execute"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:background="@drawable/button_effect"
+            android:layout_marginTop="20dp"
             android:text="Sign Up"
-            android:layout_gravity="right"
             android:onClick="onClick"/>
 
     </LinearLayout>
-
+    </ScrollView>
 </RelativeLayout>
