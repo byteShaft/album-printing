@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Iterator;
+
 public class Config {
 
     public static void setIsLoggedIn(boolean loggedIn) {
@@ -18,24 +20,38 @@ public class Config {
     }
 
     public static void saveUserProfile(String userDataAsJsonString) {
+        JSONObject data = getStringAsJson(userDataAsJsonString);
         SharedPreferences preferences = AppGlobals.getPreferences();
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("user_profile", userDataAsJsonString);
+        Iterator<?> keys = data.keys();
+        while(keys.hasNext()) {
+            String key = (String) keys.next();
+            try {
+                editor.putString(key, data.getString(key));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         editor.apply();
     }
 
-    private static String getProfileData() {
-        SharedPreferences preferences = AppGlobals.getPreferences();
-        return preferences.getString("user_profile", null);
-    }
-
-    public static JSONObject getUserProfile() {
-        JSONObject profileObject = null;
+    private static JSONObject getStringAsJson(String data) {
+        JSONObject jsonObject = null;
         try {
-            profileObject = new JSONObject(getProfileData());
+            jsonObject = new JSONObject(data);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return profileObject;
+        return jsonObject;
+    }
+
+    public static String getFullName() {
+        SharedPreferences preferences = AppGlobals.getPreferences();
+        return preferences.getString("full_name", null);
+    }
+
+    public static String getToken() {
+        SharedPreferences preferences = AppGlobals.getPreferences();
+        return preferences.getString("token", null);
     }
 }
