@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="25dp"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -80,30 +80,33 @@
             android:layout_below="@+id/container_signin_fields">
 
             <Button
+                android:id="@+id/button_sign_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:background="@drawable/register_button_effect"
+                android:text="register"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="50dp"
+                android:layout_marginStart="50dp" />
+
+            <Button
                 android:id="@+id/button_sign_in"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:text="Sign In"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="58dp"
-                android:layout_marginStart="58dp" />
-
-            <Button
-                android:id="@+id/button_sign_up"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:text="Sign Up"
-                android:layout_alignTop="@+id/button_sign_in"
+                android:background="@drawable/button_effect"
+                android:text="login"
+                android:layout_alignTop="@+id/button_sign_up"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginRight="61dp"
-                android:layout_marginEnd="61dp" />
+                android:layout_marginRight="50dp"
+                android:layout_marginEnd="50dp" />
 
         </RelativeLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>
