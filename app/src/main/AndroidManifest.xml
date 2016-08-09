@@ -20,7 +20,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.SignIn"/>
+        <activity android:name=".activities.SignIn"
+
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+
+        </activity>
         <activity android:name=".activities.SignUp"/>
         <activity android:name=".activities.ActivateAccount"/>
     </application>
