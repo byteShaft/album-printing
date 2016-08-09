@@ -39,14 +39,19 @@ public class ActivateAccount extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    public void onReadyStateChanged(HttpURLConnection connection, int readyState) {
+    public void onReadyStateChanged(
+            HttpURLConnection connection,
+            int requestType,
+            int readyState
+    ) {
         switch (readyState) {
             case HttpRequest.STATE_DONE:
                 try {
                     switch (connection.getResponseCode()) {
-                        case HttpRequest.RESPONSE_OK:
+                        case HttpURLConnection.HTTP_OK:
                             Config.saveUserProfile(mRequest.getResponseText());
                             Config.setIsLoggedIn(true);
+                            finish();
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     }
                 } catch (IOException e) {

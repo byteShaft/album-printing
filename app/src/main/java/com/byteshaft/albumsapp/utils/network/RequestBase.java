@@ -6,22 +6,22 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+public class RequestBase {
 
-public class ConnectionUtil {
-
-    private StateListenerHelpers mListenerHelpers;
     protected HttpURLConnection mConnection;
     protected String mResponseText = "";
     private ArrayList<HttpRequestStateListener> mListeners;
+    private ListenersUtil mListenerHelpers;
+    private int mRequestType;
 
-    public ConnectionUtil(Context context) {
+    protected RequestBase(Context context, int requestType) {
+        mRequestType = requestType;
         mListeners = new ArrayList<>();
-        mListenerHelpers = new StateListenerHelpers(context);
+        mListenerHelpers = ListenersUtil.getInstance(context);
     }
 
     protected void openConnection(String requestMethod, String url) {
@@ -32,6 +32,7 @@ public class ConnectionUtil {
             mListenerHelpers.emitOnReadyStateChanged(
                     mListeners,
                     mConnection,
+                    mRequestType,
                     HttpRequest.STATE_OPENED
             );
         } catch (IOException e) {
@@ -39,18 +40,7 @@ public class ConnectionUtil {
         }
     }
 
-    private void sendRequestData(String body) {
-        try {
-            byte[] outputInBytes = body.getBytes("UTF-8");
-            OutputStream os = mConnection.getOutputStream();
-            os.write(outputInBytes);
-            os.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void readResponse() {
+    protected void readResponse() {
         try {
             InputStream inputStream = mConnection.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -65,21 +55,9 @@ public class ConnectionUtil {
         mListenerHelpers.emitOnReadyStateChanged(
                 mListeners,
                 mConnection,
+                mRequestType,
                 HttpRequest.STATE_DONE
         );
-    }
-
-    protected void sendRequest(final String contentType, final String data) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mConnection.setRequestProperty("Content-Type", contentType);
-                if (data != null) {
-                    sendRequestData(data);
-                }
-                readResponse();
-            }
-        }).start();
     }
 
     protected void addReadyStateListener(HttpRequestStateListener listener) {
