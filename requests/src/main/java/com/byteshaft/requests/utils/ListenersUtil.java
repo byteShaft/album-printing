@@ -1,7 +1,10 @@
-package com.byteshaft.albumsapp.utils.network;
+package com.byteshaft.requests.utils;
 
 import android.content.Context;
 import android.os.Handler;
+
+import com.byteshaft.requests.FormDataHttpRequest;
+import com.byteshaft.requests.HttpRequestStateListener;
 
 import java.io.File;
 import java.net.HttpURLConnection;
