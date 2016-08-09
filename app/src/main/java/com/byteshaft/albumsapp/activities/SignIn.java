@@ -96,7 +96,11 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener,
     }
 
     @Override
-    public void onReadyStateChanged(HttpURLConnection connection, int readyState) {
+    public void onReadyStateChanged(
+            HttpURLConnection connection,
+            int requestType,
+            int readyState
+    ) {
         switch (readyState) {
             case HttpRequest.STATE_DONE:
                 try {

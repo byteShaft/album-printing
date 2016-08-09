@@ -49,4 +49,9 @@ public class Config {
         SharedPreferences preferences = AppGlobals.getPreferences();
         return preferences.getString("full_name", null);
     }
+
+    public static String getToken() {
+        SharedPreferences preferences = AppGlobals.getPreferences();
+        return preferences.getString("token", null);
+    }
 }

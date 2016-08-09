@@ -4,13 +4,15 @@ import android.content.Context;
 
 import com.byteshaft.albumsapp.utils.Constants;
 
-public class HttpRequest extends ConnectionUtil {
+public class HttpRequest extends HttpRequestUtil {
 
     public static final short STATE_UNSET = 0;
     public static final short STATE_OPENED = 1;
     public static final short STATE_HEADERS_RECEIVED = 2;
     public static final short STATE_LOADING = 3;
     public static final short STATE_DONE = 4;
+    public static final short REQUEST_TYPE_SIMPLE = 1;
+    public static final short REQUEST_TYPE_FORM_DATA = 2;
 
     public HttpRequest(Context context) {
         super(context);

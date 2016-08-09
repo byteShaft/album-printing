@@ -9,8 +9,10 @@ public class Constants {
     public static String ENDPOINT_ACTIVATE = API_BASE + "activate";
     public static String ENDPOINT_ME = API_BASE + "me";
     public static String ENDPOINT_ALBUMS = API_BASE_USER + "albums";
-
     public static String CONTENT_TYPE_JSON = "application/json";
-
     public static String CONFIG_KEY_FIRST_RUN = "first_run";
+
+    public static String getPhotosEndpointForAlbum(int albumID) {
+        return String.format("%s/%s/photos", ENDPOINT_ALBUMS, albumID);
+    }
 }
