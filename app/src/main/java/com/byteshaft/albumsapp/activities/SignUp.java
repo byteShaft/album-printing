@@ -41,6 +41,12 @@ public class SignUp extends AppCompatActivity implements HttpRequestStateListene
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, SignIn.class));
+    }
+
+    @Override
     public void onReadyStateChanged(
             HttpURLConnection connection,
             int requestType,

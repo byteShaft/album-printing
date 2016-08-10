@@ -21,7 +21,7 @@
         <EditText
             android:id="@+id/entry_signup_fullname"
             android:layout_width="300dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_marginTop="15dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
@@ -36,7 +36,7 @@
         <EditText
             android:id="@+id/entry_signup_email"
             android:layout_width="300dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_marginTop="15dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
@@ -51,7 +51,7 @@
         <EditText
             android:id="@+id/entry_signup_password"
             android:layout_width="300dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_marginTop="15dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
@@ -66,7 +66,7 @@
         <EditText
             android:id="@+id/entry_signup_password_repeat"
             android:layout_width="300dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_marginTop="15dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
@@ -82,7 +82,7 @@
         <EditText
             android:id="@+id/entry_signup_mobile"
             android:layout_width="300dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_marginTop="15dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"

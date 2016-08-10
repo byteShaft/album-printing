@@ -1,112 +1,99 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@mipmap/login_background"
+    android:background="@mipmap/login_with_log"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/logo"
-        android:src="@mipmap/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="150dp"
-        android:layout_marginStart="150dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <RelativeLayout
-        android:layout_below="@+id/logo"
-        android:background="@mipmap/background"
+    <LinearLayout
+        android:id="@+id/container_signin_fields"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="40dp">
+
 
         <TextView
-            android:textSize="30sp"
-            android:textColor="@android:color/white"
-            android:text="The Perfect box"
+            android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="168dp"
-            android:id="@+id/text" />
+            android:layout_marginBottom="15dp"
+            android:textSize="30sp"
+            android:textColor="@android:color/white"
+            android:text="The Perfect box" />
 
-        <LinearLayout
-            android:id="@+id/container_signin_fields"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/text"
-            android:layout_marginTop="25dp"
-            android:gravity="center"
-            android:orientation="vertical">
+        <EditText
+            android:id="@+id/entry_email"
+            android:layout_marginTop="4dp"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:singleLine="true"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:inputType="textEmailAddress"
+            android:background="@drawable/edittext_background"
+            android:hint="e-mail"
 
-            <EditText
-                android:id="@+id/entry_email"
-                android:layout_marginTop="4dp"
-                android:layout_width="250dp"
-                android:layout_height="40dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:singleLine="true"
-                android:textColor="@android:color/black"
-                android:textColorHint="@android:color/darker_gray"
-                android:inputType="textEmailAddress"
-                android:background="@drawable/edittext_background"
-                android:hint="e-mail"
+            />
 
-                />
-
-            <EditText
-                android:id="@+id/entry_password"
-                android:layout_marginTop="10dp"
-                android:layout_width="250dp"
-                android:layout_height="40dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:singleLine="true"
-                android:textColor="@android:color/black"
-                android:textColorHint="@android:color/darker_gray"
-                android:inputType="textPassword"
-                android:background="@drawable/edittext_background"
-                android:hint="Password"
-                android:layout_below="@id/entry_email"
-
-                />
-        </LinearLayout>
+        <EditText
+            android:id="@+id/entry_password"
+            android:layout_marginTop="10dp"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:singleLine="true"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:inputType="textPassword"
+            android:background="@drawable/edittext_background"
+            android:hint="Password"
+            android:layout_below="@id/entry_email"
+            />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/container_signin_fields">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/button_sign_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
+                android:layout_marginRight="15dp"
                 android:background="@drawable/register_button_effect"
+                android:layout_toLeftOf="@+id/facebook_button"
+                android:layout_toStartOf="@+id/facebook_button"
                 android:text="register"
+                android:layout_centerVertical="true" />
+
+            <ImageButton
+                android:background="@mipmap/facebook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="50dp"
-                android:layout_marginStart="50dp" />
+                android:layout_centerHorizontal="true"
+                android:id="@+id/facebook_button" />
 
             <Button
                 android:id="@+id/button_sign_in"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
+                android:layout_marginLeft="15dp"
                 android:background="@drawable/button_effect"
                 android:text="login"
                 android:layout_alignTop="@+id/button_sign_up"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="50dp"
-                android:layout_marginEnd="50dp" />
-
+                android:layout_toRightOf="@+id/facebook_button"
+                android:layout_toEndOf="@+id/facebook_button"
+                android:layout_centerVertical="true"/>
         </RelativeLayout>
-
-    </RelativeLayout>
-
+    </LinearLayout>
 </RelativeLayout>
