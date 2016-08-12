@@ -2,12 +2,21 @@ package com.byteshaft.albumsapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.WorkerThread;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.byteshaft.albumsapp.R;
+import com.byteshaft.albumsapp.fragments.CreateAlbum;
+import com.byteshaft.albumsapp.fragments.Printing;
+import com.byteshaft.albumsapp.fragments.UpdateProfile;
 import com.byteshaft.albumsapp.utils.Config;
 import com.byteshaft.albumsapp.utils.Constants;
 import com.byteshaft.albumsapp.utils.network.FormDataHttpRequest;
@@ -25,28 +34,78 @@ public class MainActivity extends AppCompatActivity implements HttpRequestStateL
 
     private FormDataHttpRequest mMultiPartHttp;
     private HttpRequest mHttp;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
+    public static TextView sToolbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        if (!Config.isLoggedIn()) {
+        Log.i("TAG", "activation "+ Config.isUserActive() + " user reg " + Config.isUSerRegister());
+        if (!Config.isUserActive() && Config.isUSerRegister()) {
+            startActivity(new Intent(getApplicationContext(), ActivateAccount.class));
+            finish();
+            return;
+
+        } else if (!Config.isLoggedIn()) {
             startActivity(new Intent(getApplicationContext(), SignIn.class));
             finish();
             return;
         }
-        TextView welcomeText = (TextView) findViewById(R.id.text_view_title_main_screen);
-        welcomeText.setText("Welcome " + Config.getFullName());
-        String externalPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String filePath = externalPath + "/ok.png";
-        final File file = new File(filePath);
-        new Thread(new Runnable() {
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        sToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
+
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void run() {
-                addPhoto(file);
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        sToolbarTitle.setText("one");
+                        break;
+                    case 1:
+                        sToolbarTitle.setText("two");
+                        break;
+                    case 2:
+                        sToolbarTitle.setText("three");
+                }
             }
-        }).start();
-        createAlbum("Test Album");
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+//        TextView welcomeText = (TextView) findViewById(R.id.text_view_title_main_screen);
+//        welcomeText.setText("Welcome " + Config.getFullName());
+//        String externalPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+//        String filePath = externalPath + "/ok.png";
+//        final File file = new File(filePath);
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                addPhoto(file);
+//            }
+//        }).start();
+//        createAlbum("Test Album");
     }
 
     @Override
@@ -97,5 +156,51 @@ public class MainActivity extends AppCompatActivity implements HttpRequestStateL
         System.out.println(file);
         System.out.println(uploaded);
         System.out.println(total);
+    }
+
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
+     */
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            // getItem is called to instantiate the fragment for the given page.
+            // Return a PlaceholderFragment (defined as a static inner class below).
+            switch (position) {
+                case 0:
+                    return new CreateAlbum();
+                case 1:
+                    return new Printing();
+                case 2:
+                    return new UpdateProfile();
+                default:
+                    return new CreateAlbum();
+            }
+        }
+
+        @Override
+        public int getCount() {
+            // Show 3 total pages.
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "SECTION 1";
+                case 1:
+                    return "SECTION 2";
+                case 2:
+                    return "SECTION 3";
+            }
+            return null;
+        }
     }
 }
