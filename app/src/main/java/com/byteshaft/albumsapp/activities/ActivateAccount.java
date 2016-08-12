@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.byteshaft.albumsapp.R;
+import com.byteshaft.albumsapp.utils.AppGlobals;
 import com.byteshaft.albumsapp.utils.Config;
 import com.byteshaft.albumsapp.utils.Constants;
 import com.byteshaft.requests.HttpRequest;
@@ -26,6 +28,7 @@ public class ActivateAccount extends AppCompatActivity implements View.OnClickLi
     private EditText mEntryEmail;
     private EditText mEntryActivationKey;
     private Button mActivateButton;
+    private TextView mHeadingText;
     private HttpRequest mRequest;
 
     @Override
@@ -35,7 +38,10 @@ public class ActivateAccount extends AppCompatActivity implements View.OnClickLi
         mEntryEmail = (EditText) findViewById(R.id.entry_activation_email);
         mEntryActivationKey = (EditText) findViewById(R.id.entry_activation_key);
         mActivateButton = (Button) findViewById(R.id.button_activate_execute);
+        mHeadingText = (TextView) findViewById(R.id.heading);
+        assert mActivateButton != null;
         mActivateButton.setOnClickListener(this);
+        setCustomFont();
     }
 
     @Override
@@ -107,7 +113,10 @@ public class ActivateAccount extends AppCompatActivity implements View.OnClickLi
         return object.toString();
     }
 
-    private void setTypeface() {
-        
+    private void setCustomFont() {
+        mEntryEmail.setTypeface(AppGlobals.typeface);
+        mEntryActivationKey.setTypeface(AppGlobals.typeface);
+        mActivateButton.setTypeface(AppGlobals.typeface);
+        mHeadingText.setTypeface(AppGlobals.typeface);
     }
 }
