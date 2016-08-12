@@ -6,9 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.byteshaft.albumsapp.R;
+import com.byteshaft.albumsapp.utils.AppGlobals;
 import com.byteshaft.albumsapp.utils.Config;
 import com.byteshaft.albumsapp.utils.Constants;
 import com.byteshaft.requests.HttpRequest;
@@ -20,15 +22,14 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
-public class SignUp extends AppCompatActivity implements HttpRequestStateListener,
-        View.OnClickListener {
+public class SignUp extends AppCompatActivity implements HttpRequestStateListener, View.OnClickListener {
 
     private EditText mEmailEntry;
     private EditText mPasswordEntry;
     private EditText mPasswordRepeatEntry;
     private EditText mFullNameEntry;
     private EditText mMobileNumberEntry;
-
+    private Button mSignUpButton;
     private HttpRequest mRequest;
 
     @Override
@@ -40,6 +41,19 @@ public class SignUp extends AppCompatActivity implements HttpRequestStateListene
         mPasswordRepeatEntry = (EditText) findViewById(R.id.entry_signup_password_repeat);
         mFullNameEntry = (EditText) findViewById(R.id.entry_signup_fullname);
         mMobileNumberEntry = (EditText) findViewById(R.id.entry_signup_mobile);
+        mSignUpButton = (Button) findViewById(R.id.button_signup_execute);
+        assert mSignUpButton != null;
+        mSignUpButton.setOnClickListener(this);
+        setCustomFont();
+    }
+
+    private void setCustomFont() {
+        mEmailEntry.setTypeface(AppGlobals.typeface);
+        mPasswordEntry.setTypeface(AppGlobals.typeface);
+        mPasswordRepeatEntry.setTypeface(AppGlobals.typeface);
+        mFullNameEntry.setTypeface(AppGlobals.typeface);
+        mMobileNumberEntry.setTypeface(AppGlobals.typeface);
+        mSignUpButton.setTypeface(AppGlobals.typeface);
     }
 
     @Override
@@ -70,15 +84,6 @@ public class SignUp extends AppCompatActivity implements HttpRequestStateListene
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                break;
-        }
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button_signup_execute:
-                validateSignUpData();
                 break;
         }
     }
@@ -153,5 +158,13 @@ public class SignUp extends AppCompatActivity implements HttpRequestStateListene
 
     private boolean isEmailValid(String email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.button_signup_execute:
+                validateSignUpData();
+        }
     }
 }

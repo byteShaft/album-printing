@@ -17,6 +17,7 @@ import com.byteshaft.albumsapp.R;
 import com.byteshaft.albumsapp.fragments.CreateAlbum;
 import com.byteshaft.albumsapp.fragments.Printing;
 import com.byteshaft.albumsapp.fragments.UpdateProfile;
+import com.byteshaft.albumsapp.utils.AppGlobals;
 import com.byteshaft.albumsapp.utils.Config;
 import com.byteshaft.albumsapp.utils.Constants;
 import com.byteshaft.requests.FormDataHttpRequest;
@@ -37,10 +38,18 @@ public class MainActivity extends AppCompatActivity implements HttpRequestStateL
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     public static TextView sToolbarTitle;
+    private int[] mTabIcons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // icons for tabs
+        mTabIcons = new int[]{
+                R.mipmap.ic_single_box,
+                R.mipmap.ic_all_box,
+                R.mipmap.profile
+        };
+
         Log.i("TAG", "activation "+ Config.isUserActive() + " user reg " + Config.isUSerRegister());
         if (!Config.isUserActive() && Config.isUSerRegister()) {
             startActivity(new Intent(getApplicationContext(), ActivateAccount.class));
@@ -57,7 +66,8 @@ public class MainActivity extends AppCompatActivity implements HttpRequestStateL
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         sToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
-
+        sToolbarTitle.setTypeface(AppGlobals.typeface);
+        sToolbarTitle.setText("Single Box");
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -68,18 +78,21 @@ public class MainActivity extends AppCompatActivity implements HttpRequestStateL
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.getTabAt(0).setIcon(mTabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(mTabIcons[1]);
+        tabLayout.getTabAt(2).setIcon(mTabIcons[2]);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
-                        sToolbarTitle.setText("one");
+                        sToolbarTitle.setText("Single Box");
                         break;
                     case 1:
-                        sToolbarTitle.setText("two");
+                        sToolbarTitle.setText("All Box");
                         break;
                     case 2:
-                        sToolbarTitle.setText("three");
+                        sToolbarTitle.setText("My Profile");
                 }
             }
 
@@ -194,11 +207,11 @@ public class MainActivity extends AppCompatActivity implements HttpRequestStateL
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+//                    return "SECTION 1";
                 case 1:
-                    return "SECTION 2";
+//                    return "SECTION 2";
                 case 2:
-                    return "SECTION 3";
+//                    return "SECTION 3";
             }
             return null;
         }

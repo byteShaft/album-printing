@@ -20,60 +20,68 @@
 
         <EditText
             android:id="@+id/entry_signup_fullname"
+            android:textSize="14sp"
             android:layout_width="300dp"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textColor="@android:color/black"
+            android:textAllCaps="false"
             android:textColorHint="@android:color/darker_gray"
             android:background="@drawable/edittext_background"
-            android:hint="Full name..."
+            android:hint="full name"
             android:inputType="textPersonName"
 
             />
 
         <EditText
             android:id="@+id/entry_signup_email"
+            android:textSize="14sp"
             android:layout_width="300dp"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/darker_gray"
             android:background="@drawable/edittext_background"
-            android:hint="Enter new email..."
+            android:textAllCaps="false"
+            android:hint="e-mail"
             android:inputType="textEmailAddress"
 
             />
 
         <EditText
             android:id="@+id/entry_signup_password"
+            android:textSize="14sp"
             android:layout_width="300dp"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/darker_gray"
             android:background="@drawable/edittext_background"
-            android:hint="password..."
+            android:textAllCaps="false"
+            android:hint="password"
             android:inputType="textPassword"
 
             />
 
         <EditText
             android:id="@+id/entry_signup_password_repeat"
+            android:textSize="14sp"
             android:layout_width="300dp"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/darker_gray"
             android:background="@drawable/edittext_background"
-            android:hint="repeat password..."
+            android:textAllCaps="false"
+            android:hint="repeat password"
             android:inputType="textPassword"
 
             />
@@ -81,15 +89,17 @@
 
         <EditText
             android:id="@+id/entry_signup_mobile"
+            android:textSize="14sp"
             android:layout_width="300dp"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/darker_gray"
             android:background="@drawable/edittext_background"
-            android:hint="Mobile number..."
+            android:textAllCaps="false"
+            android:hint="mobile number"
             android:inputType="phone"
 
             />
@@ -100,9 +110,9 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
             android:background="@drawable/button_effect"
+            android:textAllCaps="false"
             android:layout_marginTop="20dp"
-            android:text="Sign Up"
-            android:onClick="onClick"/>
+            android:text="sign up"/>
 
     </LinearLayout>
     </ScrollView>

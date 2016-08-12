@@ -106,4 +106,8 @@ public class ActivateAccount extends AppCompatActivity implements View.OnClickLi
         }
         return object.toString();
     }
+
+    private void setTypeface() {
+        
+    }
 }
