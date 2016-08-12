@@ -1,4 +1,5 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/tab_selected" android:state_selected="true"/>
-    <item android:drawable="@color/background_color"/>
+    <item android:drawable="@color/background_color"
+        android:state_selected="true"/>
+    <item android:drawable="@color/tab_selected"/>
 </selector>

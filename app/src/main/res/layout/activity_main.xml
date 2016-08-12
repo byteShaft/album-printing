@@ -51,6 +51,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabTextColor="@android:color/white"
-        app:tabBackground="@null"/>
+        app:tabBackground="@drawable/tab_background"/>
 
 </LinearLayout>
