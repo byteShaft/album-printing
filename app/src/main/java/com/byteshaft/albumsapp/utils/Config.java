@@ -74,4 +74,5 @@ public class Config {
         SharedPreferences preferences = AppGlobals.getPreferences();
         return preferences.getBoolean(Constants.KEY_USER_REGISTER_STATE, false);
     }
+
 }
