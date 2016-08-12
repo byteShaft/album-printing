@@ -1,4 +1,4 @@
-package com.byteshaft.albumsapp.utils.network;
+package com.byteshaft.requests;
 
 import java.net.HttpURLConnection;
 

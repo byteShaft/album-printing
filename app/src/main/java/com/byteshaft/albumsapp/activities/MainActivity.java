@@ -19,9 +19,9 @@ import com.byteshaft.albumsapp.fragments.Printing;
 import com.byteshaft.albumsapp.fragments.UpdateProfile;
 import com.byteshaft.albumsapp.utils.Config;
 import com.byteshaft.albumsapp.utils.Constants;
-import com.byteshaft.albumsapp.utils.network.FormDataHttpRequest;
-import com.byteshaft.albumsapp.utils.network.HttpRequest;
-import com.byteshaft.albumsapp.utils.network.HttpRequestStateListener;
+import com.byteshaft.requests.FormDataHttpRequest;
+import com.byteshaft.requests.HttpRequest;
+import com.byteshaft.requests.HttpRequestStateListener;
 
 import java.io.File;
 import java.io.IOException;

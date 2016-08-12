@@ -11,8 +11,8 @@ import android.widget.EditText;
 import com.byteshaft.albumsapp.R;
 import com.byteshaft.albumsapp.utils.Config;
 import com.byteshaft.albumsapp.utils.Constants;
-import com.byteshaft.albumsapp.utils.network.HttpRequest;
-import com.byteshaft.albumsapp.utils.network.HttpRequestStateListener;
+import com.byteshaft.requests.HttpRequest;
+import com.byteshaft.requests.HttpRequestStateListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;

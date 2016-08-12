@@ -1,6 +1,9 @@
-package com.byteshaft.albumsapp.utils.network;
+package com.byteshaft.requests.utils;
 
 import android.content.Context;
+
+import com.byteshaft.requests.HttpRequest;
+import com.byteshaft.requests.HttpRequestStateListener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
