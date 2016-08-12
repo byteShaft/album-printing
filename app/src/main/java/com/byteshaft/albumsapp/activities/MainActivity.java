@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements HttpRequestStateL
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
         tabLayout.getTabAt(0).setIcon(mTabIcons[0]);
         tabLayout.getTabAt(1).setIcon(mTabIcons[1]);
@@ -86,12 +86,15 @@ public class MainActivity extends AppCompatActivity implements HttpRequestStateL
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
+                        mViewPager.setCurrentItem(tab.getPosition(), true);
                         sToolbarTitle.setText("Single Box");
                         break;
                     case 1:
+                        mViewPager.setCurrentItem(tab.getPosition(), true);
                         sToolbarTitle.setText("All Box");
                         break;
                     case 2:
+                        mViewPager.setCurrentItem(tab.getPosition(), true);
                         sToolbarTitle.setText("My Profile");
                 }
             }
