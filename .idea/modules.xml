@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/album-printing-app.iml" filepath="$PROJECT_DIR$/album-printing-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/requests/requests.iml" filepath="$PROJECT_DIR$/requests/requests.iml" />
-      <module fileurl="file://$PROJECT_DIR$/requests/requests.iml" filepath="$PROJECT_DIR$/requests/requests.iml" />
     </modules>
   </component>
 </project>
