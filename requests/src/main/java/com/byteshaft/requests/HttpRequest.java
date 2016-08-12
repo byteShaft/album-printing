@@ -1,8 +1,9 @@
-package com.byteshaft.albumsapp.utils.network;
+package com.byteshaft.requests;
 
 import android.content.Context;
 
-import com.byteshaft.albumsapp.utils.Constants;
+import com.byteshaft.requests.utils.Constants;
+import com.byteshaft.requests.utils.HttpRequestUtil;
 
 public class HttpRequest extends HttpRequestUtil {
 
