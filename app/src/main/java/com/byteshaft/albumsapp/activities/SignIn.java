@@ -9,8 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.byteshaft.albumsapp.R;
+import com.byteshaft.albumsapp.utils.AppGlobals;
 import com.byteshaft.albumsapp.utils.Config;
 import com.byteshaft.albumsapp.utils.Constants;
 import com.byteshaft.requests.HttpRequest;
@@ -31,6 +33,7 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener,
     private EditText mPasswordEntry;
     private Button mSignInButton;
     private Button mSignUpButton;
+    private TextView mHeadingText;
     private HttpRequest mHttp;
     private static SignIn instance;
 
@@ -43,12 +46,22 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
         instance = this;
         setContentView(R.layout.activity_signin);
+        mHeadingText = (TextView) findViewById(R.id.heading_text);
         mEmailEntry = (EditText) findViewById(R.id.entry_email);
         mPasswordEntry = (EditText) findViewById(R.id.entry_password);
         mSignInButton = (Button) findViewById(R.id.button_sign_in);
         mSignUpButton = (Button) findViewById(R.id.button_sign_up);
         mSignInButton.setOnClickListener(this);
         mSignUpButton.setOnClickListener(this);
+        setCustomFonts();
+    }
+
+    private void setCustomFonts() {
+        mEmailEntry.setTypeface(AppGlobals.typeface);
+        mPasswordEntry.setTypeface(AppGlobals.typeface);
+        mSignInButton.setTypeface(AppGlobals.typeface);
+        mSignUpButton.setTypeface(AppGlobals.typeface);
+        mHeadingText.setTypeface(AppGlobals.typeface);
     }
 
     @Override

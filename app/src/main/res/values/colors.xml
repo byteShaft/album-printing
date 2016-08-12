@@ -3,8 +3,8 @@
     <color name="colorPrimary">#fcfcfc</color>
     <color name="colorPrimaryDark">#e2e2e2</color>
     <color name="colorAccent">#4b4b4b</color>
-    <color name="background_color">#0F308E</color>
+    <color name="background_color">#1F365A</color>
     <color name="text_color">#0F308E</color>
-    <color name="tab_selected">#08163D</color>
+    <color name="tab_selected">#17253F</color>
     <color name="edit_text_background">#47ecff</color>
 </resources>
