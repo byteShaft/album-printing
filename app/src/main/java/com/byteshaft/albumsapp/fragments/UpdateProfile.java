@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.byteshaft.albumsapp.R;
 import com.byteshaft.albumsapp.utils.AppGlobals;
 
-public class UpdateProfile extends Fragment {
+public class UpdateProfile extends Fragment implements View.OnClickListener {
 
     private View mBaseView;
     /// buttons
@@ -44,6 +44,12 @@ public class UpdateProfile extends Fragment {
         mAddressButton = (Button) mBaseView.findViewById(R.id.button_address);
         mPaymentButton = (Button) mBaseView.findViewById(R.id.button_payment);
         mUpdateButton = (Button) mBaseView.findViewById(R.id.button_update);
+
+        mDetailsButton.setOnClickListener(this);
+        mAddressButton.setOnClickListener(this);
+        mPaymentButton.setOnClickListener(this);
+        mUpdateButton.setOnClickListener(this);
+
 
         /// init Edittext refs
         mNameField = (EditText) mBaseView.findViewById(R.id.et_name);
@@ -78,8 +84,25 @@ public class UpdateProfile extends Fragment {
         mNameText.setTypeface(typeface);
         mEmailText.setTypeface(typeface);
         mPhoneText.setTypeface(typeface);
-        mNewPasswordText.setTypeface(typeface);
+        mPasswordText.setTypeface(typeface);
         mNewPasswordText.setTypeface(typeface);
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.button_detail:
+                System.out.println("clicked");
+                break;
+            case R.id.button_address:
+                System.out.println("clicked");
+                break;
+            case R.id.button_payment:
+                System.out.println("clicked");
+                break;
+            case R.id.button_update:
+                System.out.println("clicked");
+                break;
+        }
+    }
 }
