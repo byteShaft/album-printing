@@ -54,4 +54,24 @@ public class Config {
         SharedPreferences preferences = AppGlobals.getPreferences();
         return preferences.getString("token", null);
     }
+
+    public static void userActivationState(boolean state) {
+        SharedPreferences preferences = AppGlobals.getPreferences();
+        preferences.edit().putBoolean(Constants.KEY_USER_ACTIVATE_STATE, state).apply();
+    }
+
+    public static boolean isUserActive() {
+        SharedPreferences preferences = AppGlobals.getPreferences();
+        return preferences.getBoolean(Constants.KEY_USER_ACTIVATE_STATE, false);
+    }
+
+    public static void userRegistrationDone(boolean state) {
+        SharedPreferences preferences = AppGlobals.getPreferences();
+        preferences.edit().putBoolean(Constants.KEY_USER_REGISTER_STATE, state).apply();
+    }
+
+    public static boolean isUSerRegister() {
+        SharedPreferences preferences = AppGlobals.getPreferences();
+        return preferences.getBoolean(Constants.KEY_USER_REGISTER_STATE, false);
+    }
 }

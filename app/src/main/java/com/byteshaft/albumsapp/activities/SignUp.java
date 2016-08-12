@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import com.byteshaft.albumsapp.R;
+import com.byteshaft.albumsapp.utils.Config;
 import com.byteshaft.albumsapp.utils.Constants;
 import com.byteshaft.requests.HttpRequest;
 import com.byteshaft.requests.HttpRequestStateListener;
@@ -43,7 +45,7 @@ public class SignUp extends AppCompatActivity implements HttpRequestStateListene
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(this, SignIn.class));
+        finish();
     }
 
     @Override
@@ -57,6 +59,8 @@ public class SignUp extends AppCompatActivity implements HttpRequestStateListene
                 try {
                     switch (connection.getResponseCode()) {
                         case HttpURLConnection.HTTP_CREATED:
+                            Config.userRegistrationDone(true);
+                            SignIn.getInstance().finish();
                             finish();
                             startActivity(
                                     new Intent(getApplicationContext(), ActivateAccount.class)
@@ -108,22 +112,25 @@ public class SignUp extends AppCompatActivity implements HttpRequestStateListene
             raiseFieldMandatory(editText);
         }
 
-
         if (!isEmailValid(email)) {
             mEmailEntry.setError("Invalid Email.");
+            return;
         }
         if (!password.equals(repeatPassword)) {
             mPasswordRepeatEntry.setError("Passwords should be same.");
+            return;
         }
 
         signUp(email, password, fullName, mobileNumber);
     }
 
     private void signUp(String email, String password, String fullName, String mobile) {
+        Log.i("TAG", "sending request");
         mRequest = new HttpRequest(getApplicationContext());
         mRequest.setOnReadyStateChangedListener(this);
         mRequest.open("POST", Constants.ENDPOINT_REGISTER);
         mRequest.send(getSignUpData(email, password, fullName, mobile));
+        Log.i("TAG", "sent request");
     }
 
     private String getSignUpData(

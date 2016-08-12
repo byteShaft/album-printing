@@ -31,12 +31,17 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener,
     private EditText mPasswordEntry;
     private Button mSignInButton;
     private Button mSignUpButton;
-
     private HttpRequest mHttp;
+    private static SignIn instance;
+
+    public static SignIn getInstance() {
+        return instance;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance = this;
         setContentView(R.layout.activity_signin);
         mEmailEntry = (EditText) findViewById(R.id.entry_email);
         mPasswordEntry = (EditText) findViewById(R.id.entry_password);
@@ -63,7 +68,6 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener,
                 break;
             case R.id.button_sign_up:
                 startActivity(new Intent(getApplicationContext(), SignUp.class));
-                finish();
                 break;
         }
     }
