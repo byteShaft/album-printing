@@ -14,7 +14,6 @@ import com.byteshaft.albumsapp.utils.AppGlobals;
 import com.byteshaft.albumsapp.utils.Config;
 import com.byteshaft.albumsapp.utils.Constants;
 import com.byteshaft.requests.HttpRequest;
-import com.byteshaft.requests.HttpRequestStateListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +21,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
-public class SignUp extends AppCompatActivity implements HttpRequestStateListener, View.OnClickListener {
+public class SignUp extends AppCompatActivity implements HttpRequest.OnReadyStateChangeListener,
+        View.OnClickListener {
 
     private EditText mEmailEntry;
     private EditText mPasswordEntry;
@@ -63,11 +63,7 @@ public class SignUp extends AppCompatActivity implements HttpRequestStateListene
     }
 
     @Override
-    public void onReadyStateChanged(
-            HttpURLConnection connection,
-            int requestType,
-            int readyState
-    ) {
+    public void onReadyStateChange(HttpURLConnection connection, int requestType, int readyState) {
         switch (readyState) {
             case HttpRequest.STATE_DONE:
                 try {
@@ -132,7 +128,7 @@ public class SignUp extends AppCompatActivity implements HttpRequestStateListene
     private void signUp(String email, String password, String fullName, String mobile) {
         Log.i("TAG", "sending request");
         mRequest = new HttpRequest(getApplicationContext());
-        mRequest.setOnReadyStateChangedListener(this);
+        mRequest.setOnReadyStateChangeListener(this);
         mRequest.open("POST", Constants.ENDPOINT_REGISTER);
         mRequest.send(getSignUpData(email, password, fullName, mobile));
         Log.i("TAG", "sent request");

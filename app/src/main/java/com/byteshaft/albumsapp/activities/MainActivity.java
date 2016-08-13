@@ -2,7 +2,6 @@ package com.byteshaft.albumsapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.WorkerThread;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,9 +19,8 @@ import com.byteshaft.albumsapp.fragments.UpdateProfile;
 import com.byteshaft.albumsapp.utils.AppGlobals;
 import com.byteshaft.albumsapp.utils.Config;
 import com.byteshaft.albumsapp.utils.Constants;
-import com.byteshaft.requests.FormDataHttpRequest;
+import com.byteshaft.requests.FormData;
 import com.byteshaft.requests.HttpRequest;
-import com.byteshaft.requests.HttpRequestStateListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,11 +28,9 @@ import java.net.HttpURLConnection;
 
 import static com.byteshaft.albumsapp.utils.ui.Helpers.showToast;
 
-public class MainActivity extends AppCompatActivity implements HttpRequestStateListener,
-        FormDataHttpRequest.FileUploadProgressUpdateListener {
+public class MainActivity extends AppCompatActivity implements
+        HttpRequest.OnReadyStateChangeListener, HttpRequest.FileUploadProgressUpdateListener {
 
-    private FormDataHttpRequest mMultiPartHttp;
-    private HttpRequest mHttp;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     public static TextView sToolbarTitle;
@@ -125,11 +121,7 @@ public class MainActivity extends AppCompatActivity implements HttpRequestStateL
     }
 
     @Override
-    public void onReadyStateChanged(
-            HttpURLConnection connection,
-            int requestType,
-            int readyState
-    ) {
+    public void onReadyStateChange(HttpURLConnection connection, int requestType, int readyState) {
         switch (readyState) {
             case HttpRequest.STATE_DONE:
                 try {
@@ -148,23 +140,23 @@ public class MainActivity extends AppCompatActivity implements HttpRequestStateL
     }
 
     private void createAlbum(String name) {
-        mHttp = new HttpRequest(getApplicationContext());
-        mHttp.setOnReadyStateChangedListener(this);
-        mHttp.open("POST", Constants.ENDPOINT_ALBUMS);
-        mHttp.setRequestHeader("Authorization", "Token " + Config.getToken());
-        mHttp.send("{\"name\": " + "\"" + name + "\"" + "}");
+        HttpRequest request = new HttpRequest(getApplicationContext());
+        request.setOnReadyStateChangeListener(this);
+        request.open("POST", Constants.ENDPOINT_ALBUMS);
+        request.setRequestHeader("Authorization", "Token " + Config.getToken());
+        request.send("{\"name\": " + "\"" + name + "\"" + "}");
     }
 
-    @WorkerThread
-    private void addPhoto(final File file) {
+    private void addPhoto(String filePath) {
         final int album = 4;
-        mMultiPartHttp = new FormDataHttpRequest(getApplicationContext());
-        mMultiPartHttp.setOnReadyStateChangedListener(this);
-        mMultiPartHttp.setOnFileUploadProgressUpdateListener(this);
-        mMultiPartHttp.open("POST", Constants.getPhotosEndpointForAlbum(album));
-        mMultiPartHttp.setRequestHeader("Authorization", "Token " + Config.getToken());
-        mMultiPartHttp.addFile("photo", file);
-        mMultiPartHttp.finish();
+        FormData data = new FormData();
+        data.append(FormData.TYPE_CONTENT_FILE, "photo", filePath);
+        HttpRequest request = new HttpRequest(getApplicationContext());
+        request.setOnReadyStateChangeListener(this);
+        request.setOnFileUploadProgressUpdateListener(this);
+        request.open("POST", Constants.getPhotosEndpointForAlbum(album));
+        request.setRequestHeader("Authorization", "Token " + Config.getToken());
+        request.send(data);
     }
 
     @Override
