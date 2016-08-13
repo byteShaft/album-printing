@@ -14,7 +14,6 @@ import com.byteshaft.albumsapp.utils.AppGlobals;
 import com.byteshaft.albumsapp.utils.Config;
 import com.byteshaft.albumsapp.utils.Constants;
 import com.byteshaft.requests.HttpRequest;
-import com.byteshaft.requests.HttpRequestStateListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +22,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 
 public class ActivateAccount extends AppCompatActivity implements View.OnClickListener,
-        HttpRequestStateListener {
+        HttpRequest.OnReadyStateChangeListener {
 
     private EditText mEntryEmail;
     private EditText mEntryActivationKey;
@@ -45,11 +44,7 @@ public class ActivateAccount extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    public void onReadyStateChanged(
-            HttpURLConnection connection,
-            int requestType,
-            int readyState
-    ) {
+    public void onReadyStateChange(HttpURLConnection connection, int readyState) {
         switch (readyState) {
             case HttpRequest.STATE_DONE:
                 try {
@@ -97,7 +92,7 @@ public class ActivateAccount extends AppCompatActivity implements View.OnClickLi
 
     private void activate(String email, String activationKey) {
         mRequest = new HttpRequest(getApplicationContext());
-        mRequest.setOnReadyStateChangedListener(this);
+        mRequest.setOnReadyStateChangeListener(this);
         mRequest.open("POST", Constants.ENDPOINT_ACTIVATE);
         mRequest.send(getActivationRequestData(email, activationKey));
     }

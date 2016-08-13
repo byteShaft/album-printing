@@ -15,7 +15,6 @@ import com.byteshaft.albumsapp.utils.Config;
 import com.byteshaft.albumsapp.utils.Constants;
 import com.byteshaft.albumsapp.utils.ui.Helpers;
 import com.byteshaft.requests.HttpRequest;
-import com.byteshaft.requests.HttpRequestStateListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +22,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
-public class SignUp extends AppCompatActivity implements HttpRequestStateListener, View.OnClickListener {
+public class SignUp extends AppCompatActivity implements HttpRequest.OnReadyStateChangeListener,
+        View.OnClickListener {
 
     private EditText mEmailEntry;
     private EditText mPasswordEntry;
@@ -31,7 +31,6 @@ public class SignUp extends AppCompatActivity implements HttpRequestStateListene
     private EditText mFullNameEntry;
     private EditText mMobileNumberEntry;
     private Button mSignUpButton;
-    private HttpRequest mRequest;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,13 +62,7 @@ public class SignUp extends AppCompatActivity implements HttpRequestStateListene
         finish();
     }
 
-    @Override
-    public void onReadyStateChanged(
-            HttpURLConnection connection,
-            int requestType,
-            int readyState
-    ) {
-
+    public void onReadyStateChange(HttpURLConnection connection, int readyState) {
         switch (readyState) {
             case HttpRequest.STATE_DONE:
                 try {
@@ -140,13 +133,11 @@ public class SignUp extends AppCompatActivity implements HttpRequestStateListene
     }
 
     private void signUp(String email, String password, String fullName, String mobile) {
-        Log.i("TAG", "sending request");
-        mRequest = new HttpRequest(getApplicationContext());
-        mRequest.setOnReadyStateChangedListener(this);
-        mRequest.open("POST", Constants.ENDPOINT_REGISTER);
-        String data = getSignUpData(email, password, fullName, mobile);
-        Log.i("TAg", data);
-        mRequest.send(data);
+
+        HttpRequest request = new HttpRequest(getApplicationContext());
+        request.setOnReadyStateChangeListener(this);
+        request.open("POST", Constants.ENDPOINT_REGISTER);
+        request.send(getSignUpData(email, password, fullName, mobile));
         Log.i("TAG", "sent request");
     }
 

@@ -2,7 +2,6 @@ package com.byteshaft.albumsapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.WorkerThread;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,9 +19,8 @@ import com.byteshaft.albumsapp.fragments.UpdateProfile;
 import com.byteshaft.albumsapp.utils.AppGlobals;
 import com.byteshaft.albumsapp.utils.Config;
 import com.byteshaft.albumsapp.utils.Constants;
-import com.byteshaft.requests.FormDataHttpRequest;
+import com.byteshaft.requests.FormData;
 import com.byteshaft.requests.HttpRequest;
-import com.byteshaft.requests.HttpRequestStateListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,11 +28,9 @@ import java.net.HttpURLConnection;
 
 import static com.byteshaft.albumsapp.utils.ui.Helpers.showToast;
 
-public class MainActivity extends AppCompatActivity implements HttpRequestStateListener,
-        FormDataHttpRequest.FileUploadProgressUpdateListener {
+public class MainActivity extends AppCompatActivity implements
+        HttpRequest.OnReadyStateChangeListener, HttpRequest.FileUploadProgressListener {
 
-    private FormDataHttpRequest mMultiPartHttp;
-    private HttpRequest mHttp;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     public static TextView sToolbarTitle;
@@ -109,37 +105,16 @@ public class MainActivity extends AppCompatActivity implements HttpRequestStateL
 
             }
         });
-
-//        TextView welcomeText = (TextView) findViewById(R.id.text_view_title_main_screen);
-//        welcomeText.setText("Welcome " + Config.getFullName());
-//        String externalPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-//        String filePath = externalPath + "/ok.png";
-//        final File file = new File(filePath);
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                addPhoto(file);
-//            }
-//        }).start();
-//        createAlbum("Test Album");
     }
 
     @Override
-    public void onReadyStateChanged(
-            HttpURLConnection connection,
-            int requestType,
-            int readyState
-    ) {
+    public void onReadyStateChange(HttpURLConnection connection, int readyState) {
         switch (readyState) {
             case HttpRequest.STATE_DONE:
                 try {
                     switch (connection.getResponseCode()) {
                         case HttpURLConnection.HTTP_CREATED:
-                            if (requestType == HttpRequest.REQUEST_TYPE_FORM_DATA) {
-                                showToast("Created a photo");
-                            } else {
-                                showToast("Created album");
-                            }
+                            showToast("Done!");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -148,27 +123,27 @@ public class MainActivity extends AppCompatActivity implements HttpRequestStateL
     }
 
     private void createAlbum(String name) {
-        mHttp = new HttpRequest(getApplicationContext());
-        mHttp.setOnReadyStateChangedListener(this);
-        mHttp.open("POST", Constants.ENDPOINT_ALBUMS);
-        mHttp.setRequestHeader("Authorization", "Token " + Config.getToken());
-        mHttp.send("{\"name\": " + "\"" + name + "\"" + "}");
+        HttpRequest request = new HttpRequest(getApplicationContext());
+        request.setOnReadyStateChangeListener(this);
+        request.open("POST", Constants.ENDPOINT_ALBUMS);
+        request.setRequestHeader("Authorization", "Token " + Config.getToken());
+        request.send("{\"name\": " + "\"" + name + "\"" + "}");
     }
 
-    @WorkerThread
-    private void addPhoto(final File file) {
+    private void addPhoto(String filePath) {
         final int album = 4;
-        mMultiPartHttp = new FormDataHttpRequest(getApplicationContext());
-        mMultiPartHttp.setOnReadyStateChangedListener(this);
-        mMultiPartHttp.setOnFileUploadProgressUpdateListener(this);
-        mMultiPartHttp.open("POST", Constants.getPhotosEndpointForAlbum(album));
-        mMultiPartHttp.setRequestHeader("Authorization", "Token " + Config.getToken());
-        mMultiPartHttp.addFile("photo", file);
-        mMultiPartHttp.finish();
+        FormData data = new FormData();
+        data.append(FormData.TYPE_CONTENT_FILE, "photo", filePath);
+        HttpRequest request = new HttpRequest(getApplicationContext());
+        request.setOnReadyStateChangeListener(this);
+        request.setOnFileUploadProgressListener(this);
+        request.open("POST", Constants.getPhotosEndpointForAlbum(album));
+        request.setRequestHeader("Authorization", "Token " + Config.getToken());
+        request.send(data);
     }
 
     @Override
-    public void onFileUploadProgressUpdate(File file, long uploaded, long total) {
+    public void onFileUploadProgress(File file, long uploaded, long total) {
         System.out.println(file);
         System.out.println(uploaded);
         System.out.println(total);
