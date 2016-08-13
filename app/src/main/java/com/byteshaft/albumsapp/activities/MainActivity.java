@@ -14,8 +14,8 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.byteshaft.albumsapp.R;
-import com.byteshaft.albumsapp.fragments.CreateAlbum;
-import com.byteshaft.albumsapp.fragments.Printing;
+import com.byteshaft.albumsapp.fragments.AllBox;
+import com.byteshaft.albumsapp.fragments.OneBox;
 import com.byteshaft.albumsapp.fragments.UpdateProfile;
 import com.byteshaft.albumsapp.utils.AppGlobals;
 import com.byteshaft.albumsapp.utils.Config;
@@ -190,13 +190,13 @@ public class MainActivity extends AppCompatActivity implements HttpRequestStateL
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case 0:
-                    return new CreateAlbum();
+                    return new AllBox();
                 case 1:
-                    return new Printing();
+                    return new OneBox();
                 case 2:
                     return new UpdateProfile();
                 default:
-                    return new CreateAlbum();
+                    return new AllBox();
             }
         }
 

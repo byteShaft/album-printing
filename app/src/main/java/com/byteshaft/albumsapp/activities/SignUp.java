@@ -13,6 +13,7 @@ import com.byteshaft.albumsapp.R;
 import com.byteshaft.albumsapp.utils.AppGlobals;
 import com.byteshaft.albumsapp.utils.Config;
 import com.byteshaft.albumsapp.utils.Constants;
+import com.byteshaft.albumsapp.utils.ui.Helpers;
 import com.byteshaft.requests.HttpRequest;
 import com.byteshaft.requests.HttpRequestStateListener;
 
@@ -68,8 +69,14 @@ public class SignUp extends AppCompatActivity implements HttpRequestStateListene
             int requestType,
             int readyState
     ) {
+
         switch (readyState) {
             case HttpRequest.STATE_DONE:
+                try {
+                    Log.i("Res", "" + readyState + "connection "+ connection.getResponseCode());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 try {
                     switch (connection.getResponseCode()) {
                         case HttpURLConnection.HTTP_CREATED:
@@ -80,6 +87,9 @@ public class SignUp extends AppCompatActivity implements HttpRequestStateListene
                                     new Intent(getApplicationContext(), ActivateAccount.class)
                             );
                             break;
+                        case HttpURLConnection.HTTP_CONFLICT:
+                            Helpers.alertDialog(SignUp.this, "User already registered",
+                                    "The user is already registered");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -134,7 +144,9 @@ public class SignUp extends AppCompatActivity implements HttpRequestStateListene
         mRequest = new HttpRequest(getApplicationContext());
         mRequest.setOnReadyStateChangedListener(this);
         mRequest.open("POST", Constants.ENDPOINT_REGISTER);
-        mRequest.send(getSignUpData(email, password, fullName, mobile));
+        String data = getSignUpData(email, password, fullName, mobile);
+        Log.i("TAg", data);
+        mRequest.send(data);
         Log.i("TAG", "sent request");
     }
 
