@@ -23,10 +23,8 @@ public class RequestBase {
     private ArrayList<HttpRequest.OnReadyStateChangeListener> mStateChangedListeners;
     private ArrayList<HttpRequest.FileUploadProgressUpdateListener> mProgressListeners;
     private ListenersUtil mListenersUtil;
-    private int mRequestType;
 
-    protected RequestBase(Context context, int requestType) {
-        mRequestType = requestType;
+    protected RequestBase(Context context) {
         mStateChangedListeners = new ArrayList<>();
         mProgressListeners = new ArrayList<>();
         mListenersUtil = ListenersUtil.getInstance(context);
@@ -40,7 +38,6 @@ public class RequestBase {
             mListenersUtil.emitOnReadyStateChanged(
                     mStateChangedListeners,
                     mConnection,
-                    mRequestType,
                     HttpRequest.STATE_OPENED
             );
         } catch (IOException e) {
@@ -63,9 +60,24 @@ public class RequestBase {
         mListenersUtil.emitOnReadyStateChanged(
                 mStateChangedListeners,
                 mConnection,
-                mRequestType,
                 HttpRequest.STATE_DONE
         );
+    }
+
+    protected void sendRequestData(String body, boolean closeOnDone) {
+        try {
+            byte[] outputInBytes = body.getBytes("UTF-8");
+            if (mOutputStream == null) {
+                mOutputStream = mConnection.getOutputStream();
+            }
+            mOutputStream.write(outputInBytes);
+            mOutputStream.flush();
+            if (closeOnDone) {
+                mOutputStream.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void writeContent(String uploadFilePath) {

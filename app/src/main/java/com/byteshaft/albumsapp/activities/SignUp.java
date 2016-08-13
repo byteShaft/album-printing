@@ -30,7 +30,6 @@ public class SignUp extends AppCompatActivity implements HttpRequest.OnReadyStat
     private EditText mFullNameEntry;
     private EditText mMobileNumberEntry;
     private Button mSignUpButton;
-    private HttpRequest mRequest;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,7 +62,7 @@ public class SignUp extends AppCompatActivity implements HttpRequest.OnReadyStat
     }
 
     @Override
-    public void onReadyStateChange(HttpURLConnection connection, int requestType, int readyState) {
+    public void onReadyStateChange(HttpURLConnection connection, int readyState) {
         switch (readyState) {
             case HttpRequest.STATE_DONE:
                 try {
@@ -127,10 +126,10 @@ public class SignUp extends AppCompatActivity implements HttpRequest.OnReadyStat
 
     private void signUp(String email, String password, String fullName, String mobile) {
         Log.i("TAG", "sending request");
-        mRequest = new HttpRequest(getApplicationContext());
-        mRequest.setOnReadyStateChangeListener(this);
-        mRequest.open("POST", Constants.ENDPOINT_REGISTER);
-        mRequest.send(getSignUpData(email, password, fullName, mobile));
+        HttpRequest request = new HttpRequest(getApplicationContext());
+        request.setOnReadyStateChangeListener(this);
+        request.open("POST", Constants.ENDPOINT_REGISTER);
+        request.send(getSignUpData(email, password, fullName, mobile));
         Log.i("TAG", "sent request");
     }
 

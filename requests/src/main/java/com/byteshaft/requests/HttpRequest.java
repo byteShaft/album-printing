@@ -2,7 +2,6 @@ package com.byteshaft.requests;
 
 import android.content.Context;
 
-import com.byteshaft.requests.utils.Constants;
 import com.byteshaft.requests.utils.HttpRequestUtil;
 
 import java.io.File;
@@ -15,8 +14,13 @@ public class HttpRequest extends HttpRequestUtil {
     public static final short STATE_HEADERS_RECEIVED = 2;
     public static final short STATE_LOADING = 3;
     public static final short STATE_DONE = 4;
-    public static final short REQUEST_TYPE_SIMPLE = 1;
-    public static final short REQUEST_TYPE_FORM_DATA = 2;
+    public static final short REQUEST_TYPE_UNSET = -1;
+    public static final short REQUEST_TYPE_JSON = 1;
+    public static final short REQUEST_TYPE_FORM = 2;
+    public static final String CONTENT_TYPE_JSON = "application/json";
+    public static final String CONTENT_TYPE_FORM = String.format(
+            "multipart/form-data; boundary=%s", FormData.BOUNDARY
+    );
 
     public HttpRequest(Context context) {
         super(context);
@@ -27,7 +31,7 @@ public class HttpRequest extends HttpRequestUtil {
     }
 
     public interface OnReadyStateChangeListener {
-        void onReadyStateChange(HttpURLConnection connection, int requestType, int readyState);
+        void onReadyStateChange(HttpURLConnection connection, int readyState);
     }
 
     public void setOnReadyStateChangeListener(OnReadyStateChangeListener listener) {
@@ -50,15 +54,15 @@ public class HttpRequest extends HttpRequestUtil {
     }
 
     public void send(String data) {
-        sendRequest(Constants.CONTENT_TYPE_JSON, data);
+        sendRequest(CONTENT_TYPE_JSON, data);
     }
 
     public void send() {
-        sendRequest(Constants.CONTENT_TYPE_JSON, null);
+        sendRequest(CONTENT_TYPE_JSON, (String) null);
     }
 
     public void send(FormData formData) {
-        sendRequest(formData);
+        sendRequest(CONTENT_TYPE_FORM, formData);
     }
 
     public String getResponseText() {

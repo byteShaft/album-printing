@@ -28,14 +28,13 @@ public class ListenersUtil {
     protected void emitOnReadyStateChanged(
             ArrayList<HttpRequest.OnReadyStateChangeListener> listeners,
             final HttpURLConnection connection,
-            final int requestType,
             final int readyState
     ) {
         for (final HttpRequest.OnReadyStateChangeListener listener : listeners) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    listener.onReadyStateChange(connection, requestType, readyState);
+                    listener.onReadyStateChange(connection, readyState);
                 }
             });
         }
