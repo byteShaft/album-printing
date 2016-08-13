@@ -29,7 +29,7 @@ import java.net.HttpURLConnection;
 import static com.byteshaft.albumsapp.utils.ui.Helpers.showToast;
 
 public class MainActivity extends AppCompatActivity implements
-        HttpRequest.OnReadyStateChangeListener, HttpRequest.FileUploadProgressUpdateListener {
+        HttpRequest.OnReadyStateChangeListener, HttpRequest.FileUploadProgressListener {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -136,14 +136,14 @@ public class MainActivity extends AppCompatActivity implements
         data.append(FormData.TYPE_CONTENT_FILE, "photo", filePath);
         HttpRequest request = new HttpRequest(getApplicationContext());
         request.setOnReadyStateChangeListener(this);
-        request.setOnFileUploadProgressUpdateListener(this);
+        request.setOnFileUploadProgressListener(this);
         request.open("POST", Constants.getPhotosEndpointForAlbum(album));
         request.setRequestHeader("Authorization", "Token " + Config.getToken());
         request.send(data);
     }
 
     @Override
-    public void onFileUploadProgressUpdate(File file, long uploaded, long total) {
+    public void onFileUploadProgress(File file, long uploaded, long total) {
         System.out.println(file);
         System.out.println(uploaded);
         System.out.println(total);

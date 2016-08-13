@@ -20,12 +20,14 @@ public class RequestBase {
     protected HttpURLConnection mConnection;
     protected OutputStream mOutputStream;
     protected String mResponseText = "";
-    private ArrayList<HttpRequest.OnReadyStateChangeListener> mStateChangedListeners;
-    private ArrayList<HttpRequest.FileUploadProgressUpdateListener> mProgressListeners;
+    protected int mReadyState;
+    private ArrayList<HttpRequest.OnReadyStateChangeListener> mStateChangeListeners;
+    private ArrayList<HttpRequest.FileUploadProgressListener> mProgressListeners;
     private ListenersUtil mListenersUtil;
 
     protected RequestBase(Context context) {
-        mStateChangedListeners = new ArrayList<>();
+        mReadyState = HttpRequest.STATE_UNSET;
+        mStateChangeListeners = new ArrayList<>();
         mProgressListeners = new ArrayList<>();
         mListenersUtil = ListenersUtil.getInstance(context);
     }
@@ -35,17 +37,16 @@ public class RequestBase {
             URL urlObject = new URL(url);
             mConnection = (HttpURLConnection) urlObject.openConnection();
             mConnection.setRequestMethod(requestMethod);
-            mListenersUtil.emitOnReadyStateChanged(
-                    mStateChangedListeners,
-                    mConnection,
-                    HttpRequest.STATE_OPENED
-            );
+            mReadyState = HttpRequest.STATE_OPENED;
+            mListenersUtil.emitOnReadyStateChange(mStateChangeListeners, mConnection, mReadyState);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     protected void readResponse() {
+        mReadyState = HttpRequest.STATE_LOADING;
+        mListenersUtil.emitOnReadyStateChange(mStateChangeListeners, mConnection, mReadyState);
         try {
             InputStream inputStream = mConnection.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -56,12 +57,10 @@ public class RequestBase {
             }
             mResponseText = output.toString();
         } catch (IOException ignore) {
+
         }
-        mListenersUtil.emitOnReadyStateChanged(
-                mStateChangedListeners,
-                mConnection,
-                HttpRequest.STATE_DONE
-        );
+        mReadyState = HttpRequest.STATE_DONE;
+        mListenersUtil.emitOnReadyStateChange(mStateChangeListeners, mConnection, mReadyState);
     }
 
     protected void sendRequestData(String body, boolean closeOnDone) {
@@ -78,6 +77,10 @@ public class RequestBase {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        if (closeOnDone) {
+            mReadyState = HttpRequest.STATE_HEADERS_RECEIVED;
+            mListenersUtil.emitOnReadyStateChange(mStateChangeListeners, mConnection, mReadyState);
+        }
     }
 
     protected void writeContent(String uploadFilePath) {
@@ -93,7 +96,7 @@ public class RequestBase {
                 mOutputStream.write(buffer, 0, bytesRead);
                 mOutputStream.flush();
                 uploaded += bytesRead;
-                mListenersUtil.emitOnFileUploadProgressChanged(
+                mListenersUtil.emitOnFileUploadProgress(
                         mProgressListeners,
                         uploadFile,
                         uploaded,
@@ -106,11 +109,11 @@ public class RequestBase {
     }
 
     protected void addReadyStateListener(HttpRequest.OnReadyStateChangeListener listener) {
-        mStateChangedListeners.add(listener);
+        mStateChangeListeners.add(listener);
     }
 
     protected void addProgressUpdateListener(
-            HttpRequest.FileUploadProgressUpdateListener listener
+            HttpRequest.FileUploadProgressListener listener
     ) {
         mProgressListeners.add(listener);
     }

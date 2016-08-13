@@ -14,9 +14,6 @@ public class HttpRequest extends HttpRequestUtil {
     public static final short STATE_HEADERS_RECEIVED = 2;
     public static final short STATE_LOADING = 3;
     public static final short STATE_DONE = 4;
-    public static final short REQUEST_TYPE_UNSET = -1;
-    public static final short REQUEST_TYPE_JSON = 1;
-    public static final short REQUEST_TYPE_FORM = 2;
     public static final String CONTENT_TYPE_JSON = "application/json";
     public static final String CONTENT_TYPE_FORM = String.format(
             "multipart/form-data; boundary=%s", FormData.BOUNDARY
@@ -26,8 +23,8 @@ public class HttpRequest extends HttpRequestUtil {
         super(context);
     }
 
-    public interface FileUploadProgressUpdateListener {
-        void onFileUploadProgressUpdate(File file, long uploaded, long total);
+    public interface FileUploadProgressListener {
+        void onFileUploadProgress(File file, long uploaded, long total);
     }
 
     public interface OnReadyStateChangeListener {
@@ -38,7 +35,7 @@ public class HttpRequest extends HttpRequestUtil {
         addReadyStateListener(listener);
     }
 
-    public void setOnFileUploadProgressUpdateListener(FileUploadProgressUpdateListener listener) {
+    public void setOnFileUploadProgressListener(FileUploadProgressListener listener) {
         addProgressUpdateListener(listener);
     }
 

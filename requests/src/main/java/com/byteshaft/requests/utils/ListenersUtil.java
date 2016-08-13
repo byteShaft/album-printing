@@ -25,7 +25,7 @@ public class ListenersUtil {
         mMainHandler = new Handler(context.getMainLooper());
     }
 
-    protected void emitOnReadyStateChanged(
+    protected void emitOnReadyStateChange(
             ArrayList<HttpRequest.OnReadyStateChangeListener> listeners,
             final HttpURLConnection connection,
             final int readyState
@@ -40,17 +40,17 @@ public class ListenersUtil {
         }
     }
 
-    protected void emitOnFileUploadProgressChanged(
-            ArrayList<HttpRequest.FileUploadProgressUpdateListener> listeners,
+    protected void emitOnFileUploadProgress(
+            ArrayList<HttpRequest.FileUploadProgressListener> listeners,
             final File file,
             final long uploaded,
             final long total
     ) {
-        for (final HttpRequest.FileUploadProgressUpdateListener listener : listeners) {
+        for (final HttpRequest.FileUploadProgressListener listener : listeners) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    listener.onFileUploadProgressUpdate(file, uploaded, total);
+                    listener.onFileUploadProgress(file, uploaded, total);
                 }
             });
         }
