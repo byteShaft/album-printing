@@ -29,7 +29,7 @@ import java.net.HttpURLConnection;
 import static com.byteshaft.albumsapp.utils.ui.Helpers.showToast;
 
 public class MainActivity extends AppCompatActivity implements
-        HttpRequest.OnReadyStateChangeListener, HttpRequest.FileUploadProgressUpdateListener {
+        HttpRequest.OnReadyStateChangeListener, HttpRequest.FileUploadProgressListener {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -105,33 +105,16 @@ public class MainActivity extends AppCompatActivity implements
 
             }
         });
-
-//        TextView welcomeText = (TextView) findViewById(R.id.text_view_title_main_screen);
-//        welcomeText.setText("Welcome " + Config.getFullName());
-//        String externalPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-//        String filePath = externalPath + "/ok.png";
-//        final File file = new File(filePath);
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                addPhoto(file);
-//            }
-//        }).start();
-//        createAlbum("Test Album");
     }
 
     @Override
-    public void onReadyStateChange(HttpURLConnection connection, int requestType, int readyState) {
+    public void onReadyStateChange(HttpURLConnection connection, int readyState) {
         switch (readyState) {
             case HttpRequest.STATE_DONE:
                 try {
                     switch (connection.getResponseCode()) {
                         case HttpURLConnection.HTTP_CREATED:
-                            if (requestType == HttpRequest.REQUEST_TYPE_FORM_DATA) {
-                                showToast("Created a photo");
-                            } else {
-                                showToast("Created album");
-                            }
+                            showToast("Done!");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -153,14 +136,14 @@ public class MainActivity extends AppCompatActivity implements
         data.append(FormData.TYPE_CONTENT_FILE, "photo", filePath);
         HttpRequest request = new HttpRequest(getApplicationContext());
         request.setOnReadyStateChangeListener(this);
-        request.setOnFileUploadProgressUpdateListener(this);
+        request.setOnFileUploadProgressListener(this);
         request.open("POST", Constants.getPhotosEndpointForAlbum(album));
         request.setRequestHeader("Authorization", "Token " + Config.getToken());
         request.send(data);
     }
 
     @Override
-    public void onFileUploadProgressUpdate(File file, long uploaded, long total) {
+    public void onFileUploadProgress(File file, long uploaded, long total) {
         System.out.println(file);
         System.out.println(uploaded);
         System.out.println(total);

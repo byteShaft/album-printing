@@ -44,7 +44,7 @@ public class ActivateAccount extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    public void onReadyStateChange(HttpURLConnection connection, int requestType, int readyState) {
+    public void onReadyStateChange(HttpURLConnection connection, int readyState) {
         switch (readyState) {
             case HttpRequest.STATE_DONE:
                 try {
