@@ -3,8 +3,7 @@ package com.byteshaft.requests.utils;
 import android.content.Context;
 import android.os.Handler;
 
-import com.byteshaft.requests.FormDataHttpRequest;
-import com.byteshaft.requests.HttpRequestStateListener;
+import com.byteshaft.requests.HttpRequest;
 
 import java.io.File;
 import java.net.HttpURLConnection;
@@ -27,28 +26,28 @@ public class ListenersUtil {
     }
 
     protected void emitOnReadyStateChanged(
-            ArrayList<HttpRequestStateListener> listeners,
+            ArrayList<HttpRequest.OnReadyStateChangeListener> listeners,
             final HttpURLConnection connection,
             final int requestType,
             final int readyState
     ) {
-        for (final HttpRequestStateListener listener : listeners) {
+        for (final HttpRequest.OnReadyStateChangeListener listener : listeners) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    listener.onReadyStateChanged(connection, requestType, readyState);
+                    listener.onReadyStateChange(connection, requestType, readyState);
                 }
             });
         }
     }
 
     protected void emitOnFileUploadProgressChanged(
-            ArrayList<FormDataHttpRequest.FileUploadProgressUpdateListener> listeners,
+            ArrayList<HttpRequest.FileUploadProgressUpdateListener> listeners,
             final File file,
             final long uploaded,
             final long total
     ) {
-        for (final FormDataHttpRequest.FileUploadProgressUpdateListener listener : listeners) {
+        for (final HttpRequest.FileUploadProgressUpdateListener listener : listeners) {
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {

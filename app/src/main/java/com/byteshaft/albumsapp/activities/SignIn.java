@@ -16,7 +16,6 @@ import com.byteshaft.albumsapp.utils.AppGlobals;
 import com.byteshaft.albumsapp.utils.Config;
 import com.byteshaft.albumsapp.utils.Constants;
 import com.byteshaft.requests.HttpRequest;
-import com.byteshaft.requests.HttpRequestStateListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,7 +26,7 @@ import java.net.HttpURLConnection;
 import static com.byteshaft.albumsapp.utils.ui.Helpers.showToast;
 
 public class SignIn extends AppCompatActivity implements View.OnClickListener,
-        HttpRequestStateListener {
+        HttpRequest.OnReadyStateChangeListener {
 
     private EditText mEmailEntry;
     private EditText mPasswordEntry;
@@ -88,7 +87,7 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener,
     private void login(String email, String password) {
         String loginData = getLoginString(email, password);
         mHttp = new HttpRequest(getApplicationContext());
-        mHttp.setOnReadyStateChangedListener(this);
+        mHttp.setOnReadyStateChangeListener(this);
         mHttp.open("POST", Constants.ENDPOINT_LOGIN);
         mHttp.send(loginData);
     }
@@ -113,11 +112,7 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener,
     }
 
     @Override
-    public void onReadyStateChanged(
-            HttpURLConnection connection,
-            int requestType,
-            int readyState
-    ) {
+    public void onReadyStateChange(HttpURLConnection connection, int requestType, int readyState) {
         switch (readyState) {
             case HttpRequest.STATE_DONE:
                 try {

@@ -5,6 +5,9 @@ import android.content.Context;
 import com.byteshaft.requests.utils.Constants;
 import com.byteshaft.requests.utils.HttpRequestUtil;
 
+import java.io.File;
+import java.net.HttpURLConnection;
+
 public class HttpRequest extends HttpRequestUtil {
 
     public static final short STATE_UNSET = 0;
@@ -19,8 +22,20 @@ public class HttpRequest extends HttpRequestUtil {
         super(context);
     }
 
-    public void setOnReadyStateChangedListener(HttpRequestStateListener listener) {
+    public interface FileUploadProgressUpdateListener {
+        void onFileUploadProgressUpdate(File file, long uploaded, long total);
+    }
+
+    public interface OnReadyStateChangeListener {
+        void onReadyStateChange(HttpURLConnection connection, int requestType, int readyState);
+    }
+
+    public void setOnReadyStateChangeListener(OnReadyStateChangeListener listener) {
         addReadyStateListener(listener);
+    }
+
+    public void setOnFileUploadProgressUpdateListener(FileUploadProgressUpdateListener listener) {
+        addProgressUpdateListener(listener);
     }
 
     public void open(String requestMethod, String url) {
@@ -40,6 +55,10 @@ public class HttpRequest extends HttpRequestUtil {
 
     public void send() {
         sendRequest(Constants.CONTENT_TYPE_JSON, null);
+    }
+
+    public void send(FormData formData) {
+        sendRequest(formData);
     }
 
     public String getResponseText() {
