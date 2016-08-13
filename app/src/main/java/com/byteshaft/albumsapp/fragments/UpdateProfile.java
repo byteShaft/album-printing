@@ -13,7 +13,9 @@ import android.widget.TextView;
 
 import com.byteshaft.albumsapp.R;
 import com.byteshaft.albumsapp.utils.AppGlobals;
+import com.byteshaft.albumsapp.utils.Config;
 import com.byteshaft.albumsapp.utils.Constants;
+import com.byteshaft.albumsapp.utils.ui.Helpers;
 import com.byteshaft.requests.HttpRequest;
 
 import org.json.JSONException;
@@ -138,13 +140,12 @@ public class UpdateProfile extends Fragment implements View.OnClickListener, Htt
 
         EditText[] inputFields = {
                 mNameField,
-                mEmailField,
                 mPhoneField,
                 mPasswordField,
                 mNewPasswordField
         };
 
-        for (EditText editText: inputFields) {
+        for (EditText editText : inputFields) {
             raiseFieldMandatory(editText);
         }
 
@@ -156,22 +157,21 @@ public class UpdateProfile extends Fragment implements View.OnClickListener, Htt
         if (mPhoneNumber.isEmpty()) {
             mPhoneField.setError("Required field.");
         }
-
-        if (!isEmailValid(mEmail)) {
-            mEmailField.setError("Invalid Email.");
-            return;
-        }
+//
+//        if (!isEmailValid(mEmail)) {
+//            mEmailField.setError("Invalid Email.");
+//            return;
+//        }
 
         if (!mPassword.equals(mNewPassword)) {
             mNewPasswordField.setError("Passwords should be same.");
             return;
         }
 
-        updateProfile(mEmail, mPassword, mName, mPhoneNumber);
+        updateProfile(mNewPassword, mName, mPhoneNumber);
     }
 
     private String getUpdateData(
-            String email,
             String password,
             String fullName,
             String mobile
@@ -179,7 +179,6 @@ public class UpdateProfile extends Fragment implements View.OnClickListener, Htt
         JSONObject object = new JSONObject();
         try {
             object.put("full_name", fullName);
-            object.put("email", email);
             object.put("mobile_number", mobile);
             object.put("password", password);
         } catch (JSONException e) {
@@ -188,13 +187,15 @@ public class UpdateProfile extends Fragment implements View.OnClickListener, Htt
         return object.toString();
     }
 
-    private void updateProfile(String email, String password, String name, String phone) {
-            Log.i("TAG", "sending request");
-            mRequest = new HttpRequest(getContext());
-            mRequest.setOnReadyStateChangeListener(this);
-            mRequest.open("PUT", Constants.ENDPOINT_REGISTER);
-            mRequest.send(getUpdateData(email, password, name, phone));
-            Log.i("TAG", "sent request");
+    private void updateProfile(String password, String name, String phone) {
+        Log.i("TAG", "sending request");
+        mRequest = new HttpRequest(getContext());
+        mRequest.setOnReadyStateChangeListener(this);
+        mRequest.open("PUT", Constants.ENDPOINT_ME);
+        mRequest.setRequestHeader("Authorization", "Token " + Config.getToken());
+        mRequest.send(getUpdateData(password, name, phone));
+        Helpers.showProgressDialog(getActivity(), "Updating Profile \n please wait..");
+        Log.i("TAG", "sent request");
     }
 
     private void raiseFieldMandatory(EditText editText) {
@@ -208,11 +209,15 @@ public class UpdateProfile extends Fragment implements View.OnClickListener, Htt
         return text.isEmpty();
     }
 
-    private boolean isEmailValid(String email) {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
+//    private boolean isEmailValid(String email) {
+//        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+//    }
 
     @Override
-    public void onReadyStateChange(HttpURLConnection connection, int requestType, int readyState) {
+    public void onReadyStateChange(HttpURLConnection connection, int readyState) {
+        if (readyState == 4) {
+            Helpers.dismissProgressDialog();
+            Helpers.showToast("Profile updated");
+        }
     }
 }

@@ -138,6 +138,7 @@ public class SignUp extends AppCompatActivity implements HttpRequest.OnReadyStat
         request.setOnReadyStateChangeListener(this);
         request.open("POST", Constants.ENDPOINT_REGISTER);
         request.send(getSignUpData(email, password, fullName, mobile));
+        Helpers.showProgressDialog(this, "Signing up \n please wait..");
         Log.i("TAG", "sent request");
     }
 
