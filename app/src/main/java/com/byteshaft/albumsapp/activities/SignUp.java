@@ -13,6 +13,7 @@ import com.byteshaft.albumsapp.R;
 import com.byteshaft.albumsapp.utils.AppGlobals;
 import com.byteshaft.albumsapp.utils.Config;
 import com.byteshaft.albumsapp.utils.Constants;
+import com.byteshaft.albumsapp.utils.ui.Helpers;
 import com.byteshaft.requests.HttpRequest;
 
 import org.json.JSONException;
@@ -61,10 +62,14 @@ public class SignUp extends AppCompatActivity implements HttpRequest.OnReadyStat
         finish();
     }
 
-    @Override
     public void onReadyStateChange(HttpURLConnection connection, int readyState) {
         switch (readyState) {
             case HttpRequest.STATE_DONE:
+                try {
+                    Log.i("Res", "" + readyState + "connection "+ connection.getResponseCode());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 try {
                     switch (connection.getResponseCode()) {
                         case HttpURLConnection.HTTP_CREATED:
@@ -75,6 +80,9 @@ public class SignUp extends AppCompatActivity implements HttpRequest.OnReadyStat
                                     new Intent(getApplicationContext(), ActivateAccount.class)
                             );
                             break;
+                        case HttpURLConnection.HTTP_CONFLICT:
+                            Helpers.alertDialog(SignUp.this, "User already registered",
+                                    "The user is already registered");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -125,11 +133,12 @@ public class SignUp extends AppCompatActivity implements HttpRequest.OnReadyStat
     }
 
     private void signUp(String email, String password, String fullName, String mobile) {
-        Log.i("TAG", "sending request");
+
         HttpRequest request = new HttpRequest(getApplicationContext());
         request.setOnReadyStateChangeListener(this);
         request.open("POST", Constants.ENDPOINT_REGISTER);
         request.send(getSignUpData(email, password, fullName, mobile));
+        Helpers.showProgressDialog(this, "Signing up \n please wait..");
         Log.i("TAG", "sent request");
     }
 

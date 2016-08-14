@@ -15,6 +15,7 @@ import com.byteshaft.albumsapp.R;
 import com.byteshaft.albumsapp.utils.AppGlobals;
 import com.byteshaft.albumsapp.utils.Config;
 import com.byteshaft.albumsapp.utils.Constants;
+import com.byteshaft.albumsapp.utils.ui.Helpers;
 import com.byteshaft.requests.HttpRequest;
 
 import org.json.JSONException;
@@ -120,6 +121,7 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener,
                         case HttpURLConnection.HTTP_OK:
                             Config.saveUserProfile(mHttp.getResponseText());
                             Config.setIsLoggedIn(true);
+                            Helpers.dismissProgressDialog();
                             finish();
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             break;
