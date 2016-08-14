@@ -42,27 +42,21 @@ public class FormData {
                 return simpleDispositionLine;
             case TYPE_CONTENT_FILE:
                 String fileNameLine = String.format("filename=\"%s\"", fileName);
-                StringBuilder desiredLine = new StringBuilder();
-                desiredLine.append(simpleDispositionLine);
-                desiredLine.append(SEMICOLON);
-                desiredLine.append(fileNameLine);
-                return desiredLine.toString();
+                return simpleDispositionLine + SEMICOLON + fileNameLine;
             default:
                 throw new UnsupportedOperationException("Invalid content type.");
         }
     }
 
     private String getFieldPreContentWriteString(int contentType, String fieldName, String value) {
-        StringBuilder partBuilder = new StringBuilder();
-        partBuilder.append(DASHES);
-        partBuilder.append(BOUNDARY);
-        partBuilder.append(NEW_LINE);
-        partBuilder.append(getFieldDispositionLine(contentType, fieldName, value));
-        partBuilder.append(NEW_LINE);
-        partBuilder.append(getContentTypeString(contentType));
-        partBuilder.append(NEW_LINE);
-        partBuilder.append(NEW_LINE);
-        return partBuilder.toString();
+        return DASHES
+                + BOUNDARY
+                + NEW_LINE
+                + getFieldDispositionLine(contentType, fieldName, value)
+                + NEW_LINE
+                + getContentTypeString(contentType)
+                + NEW_LINE
+                + NEW_LINE;
     }
 
     private String getFieldPostContentWriteString(int contentType) {
@@ -70,10 +64,7 @@ public class FormData {
             case TYPE_CONTENT_TEXT:
                 return NEW_LINE;
             case TYPE_CONTENT_FILE:
-                StringBuilder builder = new StringBuilder();
-                builder.append(NEW_LINE);
-                builder.append(NEW_LINE);
-                return builder.toString();
+                return NEW_LINE + NEW_LINE;
             default:
                 throw new UnsupportedOperationException("Invalid content type.");
         }
